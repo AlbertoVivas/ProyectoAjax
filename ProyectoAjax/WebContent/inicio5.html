@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script>
+var xmlHttp = null;
+
+function iniciaObjetoRequest ()
+{
+	
+return new XMLHttpRequest();
+}
+
+function rellenaCaja()
+{
+	xmlHttp = iniciaObjetoRequest();
+	xmlHttp.onreadystatechange = procesarEventos;
+	xmlHttp.open('GET', 'CargaDepEmp?num=30', true); //indicamos como vamos a enviar los datos, en este caso con el metodo GET al archivo meses.php?num= el valor que le indiquemos en el textbox
+	xmlHttp.send(null);
+	
+}
+
+function procesarEventos()
+{
+   //Obtenemos el control del TAG que contendrá la respuesta
+  if(xmlHttp.readyState==4) //ya hemos recibido respuesta del servidor
+  {
+      if(xmlHttp.status==200)// y el código de la cabecera http es bueno
+          {
+			alert("He recibido " + xmlHttp.responseText);//el body de la respuesta
+			//document.getElementById("cajatexto").value = xmlHttp.responseText;
+			
+			
+          	var lista_dptos = xmlHttp.responseXML.getElementsByTagName("departamento");
+          	var nelementos = lista_dptos.length;
+          	var opcion;
+          	var desplegable = document.getElementById("departamentos");
+          	
+          	var id = null;
+          	var nombre = null;
+      
+			for (var i= 0; i < nelementos; i++) {
+				
+				
+				/*var id = lista_dptos[i].children[0].textContent;
+				var nombre = lista_dptos[i].children[1].textContent;*/ //FORMA MÁS ELEGANTE Y LÓGICA, PERO NO COMPATIBLE CON IE :S
+				
+				var elementoId= lista_dptos[i].getElementsByTagName("id")[0];
+				var elementoNombre = lista_dptos[i].getElementsByTagName("nombre")[0];
+				
+				
+				id = elementoId.childNodes[0].data; //también podría usar firstChild
+				nombre = elementoNombre.childNodes[0].data;//en vez de childNodes[0]
+				
+				
+				opcion = new Option(nombre, id);//Creo la opción
+				desplegable.options[desplegable.options.length] = opcion;//la seteo. POdría haber usado como índice [i]
+				 
+				
+			}
+          }
+      else
+      {
+          alert("Ha ocurrido un error"+ xmlHttp.status +":"+ xmlHttp.statusText);
+      }
+  }
+
+}
+
+
+function procesarTrabajadores()
+{
+   //Obtenemos el control del TAG que contendrá la respuesta
+  if(xmlHttp.readyState==4) //ya hemos recibido respuesta del servidor
+  {
+      if(xmlHttp.status==200)// y el código de la cabecera http es bueno
+          {
+			alert("He recibido " + xmlHttp.responseText);
+			
+			var parser = new DOMParser();
+			var xmlDoc = parser.parseFromString(xmlHttp.responseText, "application/xml");
+			
+        	var lista_empleados = xmlDoc.getElementsByTagName("empleado");
+          	var nelementos = lista_empleados.length;
+          	var opcion;
+          	var id;
+          	var elemId;
+          	var nombre;
+          	var elemNom;
+          	var elemApe;
+          	var apellido;
+          	
+          	
+          	var tablaEmpleados = document.getElementById("tablaEmpleados");
+          	var fila = '<tr BGCOLOR="#99CCFF">'+
+						'<th>Id</th>'+
+			    		'<th>Nombre</th>'+
+						'<th>Apellido</th>'+
+					   '</tr>';
+			var td = '<td>';	   
+			var tr = '<tr bgcolor="#DDDDDD" onmouseover=\'this.style.background="#FF0000"\' onmouseout=\'this.style.background="#DDDDDD"\'>'; 		   
+          
+          for (var i= 0; i < nelementos; i++) {
+        	  elemId = lista_empleados[i].getElementsByTagName("id")[0];
+        	  id = elemId.childNodes[0].data;
+        	  tr = '<tr bgcolor="#DDDDDD" onmouseover=\'this.style.background="#FF0000"\' onmouseout=\'this.style.background="#DDDDDD"\' onClick="detalleEmpleado('+id+')">';
+        	  
+        	  elemNom = lista_empleados[i].getElementsByTagName("nombre")[0];
+        	  nombre =elemNom.childNodes[0].data;
+        	  elemApe = lista_empleados[i].getElementsByTagName("apellido")[0];
+        	  apellido = elemApe.childNodes[0].data;
+        	  
+        	  fila+=tr+td+id+'</td>'+td+nombre+'</td>'+td+apellido+'</td></tr>';
+          }	
+         tablaEmpleados.innerHTML = fila;
+          }
+      else
+      {
+          alert("Ha ocurrido un error"+ xmlHttp.status +":"+ xmlHttp.statusText);
+      }
+  }
+
+}
+
+function listarTrabajadores()
+{
+	var desplegable = document.getElementById("departamentos");
+	//alert ('Ha seleccionado el valor ' + desplegable[desplegable.selectedIndex].value);
+	//alert ('Del departamento nombre' + desplegable[desplegable.selectedIndex].text);
+	var dpto = desplegable[desplegable.selectedIndex].value;
+	
+	xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = procesarTrabajadores;
+	xmlHttp.open('GET', 'CargarTrabajadoresDep?dpto='+dpto, true); //indicamos como vamos a enviar los datos, en este caso con el metodo GET al archivo meses.php?num= el valor que le indiquemos en el textbox
+	xmlHttp.send(null);
+}
+
+function detalleEmpleado(id) {
+	document.write("mikel kk"+id);
+	/*
+	var empleadoTabla =  xmlDoc.getElementsByTagName("empleadoTabla");
+	var fila = '<tr BGCOLOR="#99CCFF">'+
+					'<th>Id</th>'+
+  			   '</tr>';
+  	var nombre;
+  	var elemNom;
+  	var elemApe;
+  	var apellido;
+	var email;
+  	var elemEmail;
+  	var tel;
+  	var elemTel;
+  	var fec;
+  	var elemFec;
+  	var com;
+  	var elemCom;
+  	var jef;
+  	var elemJef;
+  	var dep;
+  	var elemDep;
+  	
+  	fila+='<tr><td>'+id+'</tr></td>';
+  	
+  	empleadoTabla.innerHTML = fila;
+	*/
+	
+}
+
+
+</script>
+</head>
+
+
+<body>
+
+		<table>
+			<tr>
+				<td>
+					<select id="departamentos" onchange="listarTrabajadores();"></select>
+				</td>
+				<td>
+						<table id="tablaEmpleados" border="1" bordercolor="blue"></table>
+				</td>
+				<!-- 
+				<td>
+					<table title="Detalle del empleado" id="empleadoTabla" border="1" bordercolor="red"></table>
+				</td>
+				 -->
+		    </tr>
+			<tr>
+				<td>
+					<input type="submit" value="Buscar Departamentos" onclick="rellenaCaja();">
+				</td>
+			</tr>
+		</table>
+</body>
+</html>
