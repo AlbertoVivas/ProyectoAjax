@@ -83,6 +83,9 @@ function procesarTrabajadores()
 			
         	var lista_empleados = xmlDoc.getElementsByTagName("empleado");
           	var nelementos = lista_empleados.length;
+          	var tablaEmpleados = document.getElementById("tablaEmpleados");
+          	
+          	/*
           	var opcion;
           	var id;
           	var elemId;
@@ -114,6 +117,71 @@ function procesarTrabajadores()
         	  fila+=tr+td+id+'</td>'+td+nombre+'</td>'+td+apellido+'</td></tr>';
           }	
          tablaEmpleados.innerHTML = fila;
+         */
+         
+         
+         
+         var tabla = document.createElement('table');
+         var id,
+         	 nombre,
+         	 apellido;
+         
+         if(null != tabla){ //si la tabla no esta vacia la borro 
+        	 tabla.remove();
+         }
+         
+         var trCab = document.createElement("tr"),
+         	 th1 = document.createElement("th"),
+         	 th2 = document.createElement("th"),
+         	 th3 = document.createElement("th");
+         	 
+         th1.innerHTML = 'Id';
+         th2.innerHTML = 'Nombre';
+         th3.innerHTML = 'Apellido';
+        
+         trCab.appendChild(th1);
+         trCab.appendChild(th2);
+         trCab.appendChild(th3);
+         
+         tabla.appendChild(trCab);
+         tabla.setAttribute("border", "1");
+         tabla.setAttribute("bordercolor", "blue");
+         
+         
+         
+         for (var i= 0; i < nelementos; i++) {
+        	 	 
+       	  	id =lista_empleados[i].getElementsByTagName("id")[0].childNodes[0].data;
+  	  		nombre =lista_empleados[i].getElementsByTagName("nombre")[0].childNodes[0].data;
+  	  		apellido =lista_empleados[i].getElementsByTagName("apellido")[0].childNodes[0].data; 
+        	 
+  	  		//creamos los elementos de cada fila de la tabla
+  	  		
+  	  		var tr  =document.createElement('tr'),//<tr></tr>
+  	  			td1 =document.createElement('td'),
+  	  			td2 =document.createElement('td'),
+  	  			td3 =document.createElement('td');
+  	  		//el texto entre las variables
+  	  		
+  	  		//
+  	  		td1.innerHTML = id;
+  	  		td2.innerHTML = nombre;
+  	  		td3.innerHTML = apellido;
+  	  		
+  	  		tr.appendChild(td1);
+  	  		tr.appendChild(td2);
+  	  		tr.appendChild(td3);
+  	  		
+  	  		
+  	  		tabla.appendChild(tr);
+  	  		
+         }
+         
+         
+         tablaEmpleados.innerHTML = tabla;
+         
+         
+         
           }
       else
       {
@@ -180,7 +248,8 @@ function detalleEmpleado(id) {
 					<select id="departamentos" onchange="listarTrabajadores();"></select>
 				</td>
 				<td>
-						<table id="tablaEmpleados" border="1" bordercolor="blue"></table>
+						 <table id="tablaEmpleados" border="1" bordercolor="blue"></table> 
+						<!--<p id="tablaEmpleados"></p>-->
 				</td>
 				<!-- 
 				<td>

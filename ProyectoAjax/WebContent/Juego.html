@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Juego</title>
+<link href="css/Juego.css" rel="stylesheet" type="text/css"/>
+
+
+<script type="text/javascript">
+function click(){
+	
+	
+	
+	
+	
+		
+}
+
+function aleatorio(){
+	var inferior = 0;
+	var superior = 10;
+ 	var numPosibilidades = superior - inferior 
+   	var aleat = Math.random() * numPosibilidades 
+   	aleat = Math.round(aleat) 
+ 	return parseInt(inferior) + aleat; 
+}
+
+function dameColor() {
+	var arrayColores = new Array(10);
+	arrayColores[0] = "yelow";
+	arrayColores[1] = "green";
+	arrayColores[2] = "red";
+	arrayColores[3] = "blue";
+	arrayColores[4] = "grey";
+	arrayColores[5] = "pink";
+	arrayColores[6] = "cyan";
+	arrayColores[7] = "purple";
+	arrayColores[8] = "black";
+	arrayColores[9] = "lightgreen";
+	return arrayColores[aleatorio()];
+}
+//function bgc(coloresDados){//back ground color
+function bgc(){//back ground color	
+	
+	var arrayColores = new Array(20);
+	var termine= false;
+	var num=0;
+	var color;
+	var n_yel=0;
+	var n_gre=0;
+	var n_red=0;
+	var n_blu=0;
+	var n_gry=0;
+	var n_pin=0;
+	var n_cya=0;
+	var n_pur=0;
+	var n_bla=0;
+	var n_lig=0;
+	
+	
+	while (num<20){
+		color = dameColor();
+		
+		if(color== "yelow" && n_yel<2){
+			arrayColores[num]=color;
+			n_yel++;
+			num++;
+		}
+		
+		if(color== "green" && n_gre<2){
+			arrayColores[num]=color;
+			n_gre++;
+			num++;
+		}
+		
+		if(color== "red" && n_red<2){
+			arrayColores[num]=color;
+			n_red++;
+			num++;
+		}
+		
+		if(color== "blue" && n_blu<2){
+			arrayColores[num]=color;
+			n_blu++;
+			num++;
+		}
+		
+		if(color== "grey" && n_gry<2){
+			arrayColores[num]=color;
+			n_gry++;
+			num++;
+		}
+		
+		if(color== "pink" && n_pin<2){
+			arrayColores[num]=color;
+			n_pin++;
+			num++;
+		}
+		
+		if(color== "cyan" && n_cya<2){
+			arrayColores[num]=color;
+			n_cya++;
+			num++;
+		}
+		
+		if(color== "purple" && n_pur<2){
+			arrayColores[num]=color;
+			n_pur++;
+			num++;
+		}
+		
+		if(color== "black" && n_bla<2){
+			arrayColores[num]=color;
+			n_bla++;
+			num++;
+		}
+		
+		if(color== "lightgreen" && n_lig<2){
+			arrayColores[num]=color;
+			n_lig++;
+			num++;
+		}	
+	}
+	return arrayColores;
+}
+
+function dameTabla() {
+	
+	
+	var jugar = document.getElementById("div_principal");
+	while(jugar.hasChildNodes()){
+		jugar.removeChild(jugar.lastChild);
+	}
+	
+	var div_v = null;
+	var div_h = null;
+	var n_v=5;
+	var n_h=4;
+	
+	var coloresDados = new Array(20);
+	var num_cor =0;
+	
+	coloresDados = bgc();
+	for(var j=1;j<=n_h;j++){
+		div_h = document.createElement("div");
+		div_h.setAttribute("id", "div_horizontal");
+		for(var i=1;i<=n_v;i++){
+			var color = coloresDados[num_cor];
+			num_cor++;
+			div_v = document.createElement("div");
+		
+			if(i!=5){
+				div_v.setAttribute("id", "div_vertical");	
+			}else{
+				div_v.setAttribute("id", "div_vertical_u");
+			}
+			div_v.setAttribute("style","background-color:"+color);
+			div_v.setAttribute("onclick","click(this)");
+			div_h.appendChild(div_v);
+		}
+		jugar.appendChild(div_h);
+	}
+}
+</script>
+
+
+</head>
+<body>
+<input type="submit" value="Jugar" onclick="dameTabla()">
+<div id="div_principal">
+</div>
+
+
+</body>
+</html>
