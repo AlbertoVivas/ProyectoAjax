@@ -8,6 +8,7 @@
     /*border-style: solid;*/
     position: absolute;
     border-color: red;
+    z-index: -1;
 }
 #div_horizontal{
 	
@@ -16,6 +17,7 @@
     float:left;
    /* border-style: solid;*/
     position: relative;
+    z-index: 1;
   	
 }
 
@@ -26,6 +28,7 @@
 	float:left;
 	border-style: solid;
 	position: relative;
+	z-index: 1;
 }
 #div_vertical_u{
 	
@@ -34,4 +37,6 @@
 	float:left;
 	border-style: solid;
 	position: relative;
+	z-index: 1;
+	/*clear: left;*/
 }

@@ -7,7 +7,74 @@
 
 
 <script type="text/javascript">
-function click(){
+var primer_click = false;
+var div1;
+var div2;
+var color1;
+var color2;
+var colores_hechos=0;
+
+//function click(div){
+function llama(div){
+	var mensaje = document.getElementById("mensaje");
+	while(mensaje.hasChildNodes()){mensaje.removeChild(mensaje.lastChild);}
+	var divmen = document.createElement("div");
+	divmen.innerHTML = "nº="+colores_hechos;
+	mensaje.appendChild(divmen);
+
+	if (!primer_click){
+		primer_click=true;
+		div1 = div;
+		color1 = div.style.background;
+	}else {
+		div2 = div;	
+		color2 = div.style.background;
+		primer_click = false;
+		if(color1==color2 && div1!=div2 && color1!="white"){
+			div1.style.background="white";// = 'background-color: "white";';
+			div2.style.background="white";// = 'background-color: "white";';
+			colores_hechos+=2;
+			if(colores_hechos<20){
+				while(mensaje.hasChildNodes()){mensaje.removeChild(mensaje.lastChild);}
+				divmen = document.createElement("div");
+				divmen.innerHTML="los colores son iguales, color1="+color1+" color2="+color2+ " nº="+colores_hechos+"/20";
+				mensaje.appendChild(divmen);
+				//alert("los colores son iguales, color1="+color1+" color2="+color2+ " nº="+colores_hechos+"/20");	
+			}else{
+				colores_hechos=0;
+				alert("Has ganado, eres la caña de españa!!!");
+				var jugar = document.getElementById("div_principal");
+				while(jugar.hasChildNodes()){
+					jugar.removeChild(jugar.lastChild);
+				}
+				while(mensaje.hasChildNodes()){mensaje.removeChild(mensaje.lastChild);}
+			}
+			
+			
+		}else{
+			if(div1==div2){
+				while(mensaje.hasChildNodes()){mensaje.removeChild(mensaje.lastChild);}
+				divmen = document.createElement("div");
+				divmen.innerHTML="No vale pulsar el mismo";
+				mensaje.appendChild(divmen);
+				//alert("No vale pulsar el mismo");
+			
+			}else{
+				if(color1=="white"||color2=="white"){
+					while(mensaje.hasChildNodes()){mensaje.removeChild(mensaje.lastChild);}
+					divmen = document.createElement("div");
+					divmen.innerHTML="no pulses los blancos -.-!";
+					mensaje.appendChild(divmen);
+				}else{
+				while(mensaje.hasChildNodes()){mensaje.removeChild(mensaje.lastChild);}
+				divmen = document.createElement("div");
+				divmen.innerHTML="los colores son distintos "+color1+" "+color2;
+				mensaje.appendChild(divmen);	
+				//alert("los colores son distintos "+color1+" "+color2);
+				}
+			}	
+		}	
+	}
 	
 	
 	
@@ -27,7 +94,7 @@ function aleatorio(){
 
 function dameColor() {
 	var arrayColores = new Array(10);
-	arrayColores[0] = "yelow";
+	arrayColores[0] = "yellow";
 	arrayColores[1] = "green";
 	arrayColores[2] = "red";
 	arrayColores[3] = "blue";
@@ -61,7 +128,7 @@ function bgc(){//back ground color
 	while (num<20){
 		color = dameColor();
 		
-		if(color== "yelow" && n_yel<2){
+		if(color== "yellow" && n_yel<2){
 			arrayColores[num]=color;
 			n_yel++;
 			num++;
@@ -127,7 +194,7 @@ function bgc(){//back ground color
 function dameTabla() {
 	
 	
-	var jugar = document.getElementById("div_principal");
+ 	var jugar = document.getElementById("div_principal");
 	while(jugar.hasChildNodes()){
 		jugar.removeChild(jugar.lastChild);
 	}
@@ -154,11 +221,19 @@ function dameTabla() {
 			}else{
 				div_v.setAttribute("id", "div_vertical_u");
 			}
-			div_v.setAttribute("style","background-color:"+color);
-			div_v.setAttribute("onclick","click(this)");
+			div_v.setAttribute("onclick","llama(this);");
+			//div_v.setAttribute("style","background-color:\""+color+"\";");
+			//div_v.setAttribute("style","background-color:"+color);
+			div_v.setAttribute("style","background:"+color);
+			//div_v.setAttribute("onmouseover","this.style.background=\"orange\";");
+			//div_v.setAttribute("onmouseout","this.style.background=\""+color+"\";");
+			
+			//div_v.setAttribute("onclick","click(this)");
+			
 			div_h.appendChild(div_v);
 		}
 		jugar.appendChild(div_h);
+		//document.body.appendChild(div_h);
 	}
 }
 </script>
@@ -166,10 +241,11 @@ function dameTabla() {
 
 </head>
 <body>
-<input type="submit" value="Jugar" onclick="dameTabla()">
+<div>
+<input type="submit" value="Jugar" onclick="dameTabla();" style="float: left;">
+<div id="mensaje" style="float: cen;"></div>
+</div>
 <div id="div_principal">
 </div>
-
-
 </body>
 </html>
